@@ -2,10 +2,26 @@
 
 export const TBC = (what: string) => `[[DA_CONFERMARE: ${what}]]`;
 
+/** URL pubblico: variabile esplicita, poi URL Vercel del deploy, poi il dominio del cliente.
+ *  Tollera variabili vuote e valori senza protocollo (es. "datina.it"). */
+function resolveSiteUrl(): string {
+  const raw =
+    process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+    process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim() ||
+    process.env.VERCEL_URL?.trim() ||
+    "datina.it";
+  const withProtocol = /^https?:\/\//.test(raw) ? raw : `https://${raw}`;
+  try {
+    return new URL(withProtocol).origin;
+  } catch {
+    return "https://datina.it";
+  }
+}
+
 export const site = {
   name: "Da Tina – Pizzeria Popolare",
   shortName: "Da Tina",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://datina.it",
+  url: resolveSiteUrl(),
   claim: "Il sapore di una pizza che sa di casa",
   subtitle: "Dove l'unica cosa che conta è la qualità del tempo che passi qui",
   address: {
