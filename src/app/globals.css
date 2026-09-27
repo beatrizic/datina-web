@@ -1,0 +1,172 @@
+@import "tailwindcss";
+
+/* ───────── Design token ─────────
+   Contrasti (WCAG 2.x): crema/verde 7.1 · inchiostro/crema 15.6 · crema/rosso-profondo 5.4
+   Il rosso pomodoro vivo (3.98 su crema) è solo per grafica e testo ≥ 24px. */
+:root {
+  --verde: #0e5a2b;
+  --verde-scuro: #0a4220;
+  --crema: #f5ecd7;
+  --crema-scura: #eadcbb;
+  --pomodoro: #d63a22;
+  --pomodoro-profondo: #b42a17;
+  --inchiostro: #16140f;
+  --crosta: #e3b774;
+  --radius: 1.25rem;
+}
+
+@theme inline {
+  --color-verde: var(--verde);
+  --color-verde-scuro: var(--verde-scuro);
+  --color-crema: var(--crema);
+  --color-crema-scura: var(--crema-scura);
+  --color-pomodoro: var(--pomodoro);
+  --color-pomodoro-profondo: var(--pomodoro-profondo);
+  --color-inchiostro: var(--inchiostro);
+  --color-crosta: var(--crosta);
+  --font-display: var(--font-display);
+  --font-sans: var(--font-body);
+}
+
+html {
+  background: var(--verde);
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--crema);
+  color: var(--inchiostro);
+  font-family: var(--font-body), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--pomodoro);
+  color: var(--crema);
+}
+
+:focus-visible {
+  outline: 3px solid var(--pomodoro);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@layer components {
+.display {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 900;
+  line-height: 0.86;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+/* Grana condivisa sugli ingredienti: stessa texture per tutto il cast */
+.ingredient {
+  display: block;
+  user-select: none;
+  filter: drop-shadow(0 10px 14px rgb(22 20 15 / 0.22));
+}
+
+/* Pulsanti "pillola" */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  min-height: 48px;
+  padding: 0.75em 1.5em;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.2s;
+}
+.btn:hover {
+  transform: translateY(-2px) rotate(-1.5deg);
+}
+.btn-rosso {
+  background: var(--pomodoro-profondo);
+  color: var(--crema);
+}
+.btn-rosso:hover {
+  background: var(--inchiostro);
+}
+.btn-crema {
+  background: var(--crema);
+  color: var(--verde);
+}
+.btn-crema:hover {
+  background: var(--crosta);
+}
+
+/* Campi form */
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+.field label {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.field input:not([type="checkbox"]),
+.field select,
+.field textarea {
+  min-height: 48px;
+  width: 100%;
+  border-radius: 0.8rem;
+  border: 2px solid currentColor;
+  background: transparent;
+  padding: 0.6rem 0.9rem;
+  font-size: 1rem; /* ≥16px: niente zoom su iOS */
+}
+.field textarea {
+  min-height: 6rem;
+}
+.field [aria-invalid="true"] {
+  border-color: var(--pomodoro);
+  box-shadow: 0 0 0 2px var(--pomodoro);
+}
+.field-error {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+}
+
+/* Marquee */
+@keyframes marquee {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+  animation-direction: var(--marquee-direction, normal);
+}
+
+/* Galleggiamento ingredienti */
+@keyframes float {
+  50% {
+    transform: translate3d(0, -14px, 0) rotate(var(--float-rot, 6deg));
+  }
+}
+.float {
+  animation: float var(--float-duration, 6s) ease-in-out infinite;
+  animation-delay: var(--float-delay, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .marquee-track,
+  .float {
+    animation: none;
+  }
+  .btn,
+  .btn:hover {
+    transition: none;
+    transform: none;
+  }
+}
