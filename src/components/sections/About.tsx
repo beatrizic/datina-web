@@ -12,10 +12,10 @@ export function About() {
     >
       <div className="mx-auto grid max-w-6xl gap-14 md:grid-cols-[1.1fr_1fr] md:items-center">
         <div>
-          <h2 id="chi-siamo-title" className="display text-[clamp(3.5rem,12vw,9rem)] text-verde">
+          <h2 id="chi-siamo-title" data-split className="display text-[clamp(3.5rem,12vw,9rem)] text-verde">
             Chi siamo
           </h2>
-          <div className="mt-8 space-y-5 text-lg leading-relaxed">
+          <div data-reveal className="mt-8 space-y-5 text-lg leading-relaxed">
             <p>
               <Tbc>testo integrale &quot;Chi siamo&quot; (nonna Tina e Vigone) dal sito originale</Tbc>
             </p>

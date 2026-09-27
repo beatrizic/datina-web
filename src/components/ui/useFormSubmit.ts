@@ -1,13 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import type { z } from "zod";
-import { flattenErrors, type FieldErrors } from "@/lib/schemas";
+import type { FieldErrors, SchemaName } from "@/lib/schemas";
 
 type Status = { kind: "idle" | "sending" | "ok" } | { kind: "error"; message: string };
 
+/** zod resta fuori dal bundle iniziale: si scarica al primo focus nel form (o al submit). */
+const loadSchemas = () => import("@/lib/schemas");
+
 /** Validazione client con lo stesso schema zod del server, poi POST JSON. */
-export function useFormSubmit<S extends z.ZodType>(endpoint: string, schema: S) {
+export function useFormSubmit(endpoint: string, schemaName: SchemaName) {
   const [errors, setErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<Status>({ kind: "idle" });
 
@@ -18,7 +20,8 @@ export function useFormSubmit<S extends z.ZodType>(endpoint: string, schema: S) 
     const data: Record<string, unknown> = Object.fromEntries(fd.entries());
     for (const el of form.querySelectorAll<HTMLInputElement>("input[type=checkbox]")) data[el.name] = el.checked;
 
-    const parsed = schema.safeParse(data);
+    const { schemas, flattenErrors } = await loadSchemas();
+    const parsed = schemas[schemaName].safeParse(data);
     if (!parsed.success) {
       const errs = flattenErrors(parsed.error);
       setErrors(errs);
@@ -48,5 +51,8 @@ export function useFormSubmit<S extends z.ZodType>(endpoint: string, schema: S) 
     }
   }
 
-  return { errors, status, onSubmit };
+  /** Da collegare a onFocus del form: precarica zod mentre l'utente compila. */
+  const prefetch = () => void loadSchemas();
+
+  return { errors, status, onSubmit, prefetch };
 }

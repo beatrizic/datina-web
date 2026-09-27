@@ -7,6 +7,7 @@ import { Booking } from "@/components/sections/Booking";
 import { Location } from "@/components/sections/Location";
 import { Closing } from "@/components/sections/Closing";
 import { FloatingCta } from "@/components/ui/FloatingCta";
+import { Motion } from "@/components/motion/Motion";
 import { restaurantJsonLd } from "@/lib/jsonld";
 
 export default function Home() {
@@ -27,6 +28,7 @@ export default function Home() {
         <Closing />
       </main>
       <FloatingCta />
+      <Motion />
     </>
   );
 }

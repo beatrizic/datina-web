@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { site } from "@/data/site";
+import { bookingSlots, isoWeekday, todayInRome } from "@/lib/booking";
 
 const consent = z.literal(true, { error: "Serve il consenso al trattamento dei dati" });
 /** Honeypot: campo nascosto che un umano lascia vuoto. */
@@ -13,27 +14,6 @@ export const subscribeSchema = z.object({
   website: honeypot,
 });
 export type SubscribeInput = z.infer<typeof subscribeSchema>;
-
-/** Slot ogni 30' dall'apertura all'ultimo orario prenotabile. */
-export function bookingSlots(): string[] {
-  const toMin = (t: string) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3));
-  const out: string[] = [];
-  for (let m = toMin(site.opens); m <= toMin(site.lastBookingSlot); m += 30) {
-    out.push(`${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`);
-  }
-  return out;
-}
-
-/** Data odierna a Roma in formato YYYY-MM-DD (indipendente dal fuso del server). */
-export function todayInRome(now = new Date()): string {
-  return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Rome" }).format(now);
-}
-
-/** Giorno ISO (1 = lun … 7 = dom) di una data YYYY-MM-DD. */
-export function isoWeekday(date: string): number {
-  const d = new Date(`${date}T12:00:00Z`).getUTCDay();
-  return d === 0 ? 7 : d;
-}
 
 export const reservationSchema = z
   .object({
@@ -68,3 +48,7 @@ export function flattenErrors(err: z.ZodError): FieldErrors {
   }
   return out;
 }
+
+/** Schemi per nome: il client li carica in lazy (zod pesa ~100 KB gz) al primo contatto col form. */
+export const schemas = { subscribe: subscribeSchema, reservation: reservationSchema } as const;
+export type SchemaName = keyof typeof schemas;

@@ -1,14 +1,14 @@
 "use client";
 
 import { site } from "@/data/site";
-import { bookingSlots, reservationSchema, todayInRome } from "@/lib/schemas";
+import { bookingSlots, todayInRome } from "@/lib/booking";
 import { Field, Honeypot, PrivacyCheck } from "@/components/ui/Field";
 import { useFormSubmit } from "@/components/ui/useFormSubmit";
 import { Tbc } from "@/components/ui/Tbc";
 import { Ingredient } from "@/components/ingredients/Ingredient";
 
 export function Booking() {
-  const { errors, status, onSubmit } = useFormSubmit("/api/reservations", reservationSchema);
+  const { errors, status, onSubmit, prefetch } = useFormSubmit("/api/reservations", "reservation");
 
   return (
     <section
@@ -17,9 +17,11 @@ export function Booking() {
       aria-labelledby="prenota-title"
       className="relative overflow-hidden bg-crema px-4 py-24 md:py-36"
     >
-      <Ingredient name="friarielli" size={180} className="absolute top-10 -right-8 rotate-12 max-md:hidden" />
+      <div data-scroll-speed="1" className="absolute top-10 -right-8 max-md:hidden">
+        <Ingredient name="friarielli" size={180} className="rotate-12" />
+      </div>
       <div className="relative mx-auto max-w-5xl">
-        <h2 id="prenota-title" className="display text-[clamp(3.5rem,12vw,9rem)] text-pomodoro-profondo">
+        <h2 id="prenota-title" data-split className="display text-[clamp(3.5rem,12vw,9rem)] text-pomodoro-profondo">
           Prenota il tuo tavolo
         </h2>
         <p className="mt-4 max-w-xl text-lg">
@@ -31,7 +33,7 @@ export function Booking() {
             Richiesta inviata! Ti scriviamo per confermare.
           </p>
         ) : (
-          <form noValidate onSubmit={onSubmit} className="relative mt-10 grid gap-5 md:grid-cols-2">
+          <form noValidate onSubmit={onSubmit} onFocus={prefetch} data-reveal className="relative mt-10 grid gap-5 md:grid-cols-2">
             <Field name="name" label="Nome" required autoComplete="name" error={errors.name} />
             <Field
               name="people"

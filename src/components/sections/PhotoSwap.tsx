@@ -9,7 +9,7 @@ import { useState, type ReactNode } from "react";
 export function PhotoSwap({ base, reveal, label }: { base: ReactNode; reveal: ReactNode; label: string }) {
   const [on, setOn] = useState(false);
   return (
-    <figure className="relative">
+    <figure data-mask-reveal className="relative">
       <button
         type="button"
         aria-pressed={on}

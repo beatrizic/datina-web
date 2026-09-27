@@ -29,7 +29,7 @@ export function Menu() {
       className="relative bg-verde px-4 py-24 text-crema md:py-36"
     >
       <div className="mx-auto max-w-7xl">
-        <h2 id="menu-title" className="display text-[clamp(4rem,16vw,13rem)]">
+        <h2 id="menu-title" data-split className="display text-[clamp(4rem,16vw,13rem)]">
           Il menù
         </h2>
 
@@ -74,7 +74,7 @@ export function Menu() {
                   {visiblePizze.length} pizze
                 </span>
               </fieldset>
-              <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <ul data-stagger className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {visiblePizze.map((p) => (
                   <PizzaCard key={p.name} pizza={p} />
                 ))}

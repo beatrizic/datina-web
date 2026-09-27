@@ -1,7 +1,6 @@
 import { site } from "@/data/site";
 import { Ingredient } from "@/components/ingredients/Ingredient";
 import type { CastName } from "@/lib/ingredients";
-import { HeroParallax } from "./HeroParallax";
 
 /** Posizioni in % della hero; depth guida il parallax (0 = fermo, 1 = massimo). */
 const FLOATERS: { name: CastName; x: number; y: number; size: number; depth: number; rot: number }[] = [
@@ -21,14 +20,16 @@ export function Hero() {
       data-section="Benvenuti"
       className="relative isolate flex min-h-[100svh] flex-col items-center justify-center overflow-hidden bg-verde px-4 py-24 text-crema"
     >
-      <HeroParallax>
+      {/* Tre livelli, ognuno con il suo transform: scroll (esterno) → puntatore → galleggiamento */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
         {FLOATERS.map((f, i) => (
           <div
             key={f.name}
-            data-depth={f.depth}
+            data-scroll-speed={f.depth * 1.6}
             className="absolute"
             style={{ left: `${f.x}%`, top: `${f.y}%`, width: "clamp(64px, 11vw, 180px)" }}
           >
+            <div data-depth={f.depth}>
             <div
               className="float"
               style={
@@ -41,11 +42,12 @@ export function Hero() {
             >
               <Ingredient name={f.name} size={f.size} className="h-auto w-full" />
             </div>
+            </div>
           </div>
         ))}
-      </HeroParallax>
+      </div>
 
-      <div className="relative z-10 flex max-w-5xl flex-col items-center text-center">
+      <div data-hero-title className="relative z-10 flex max-w-5xl flex-col items-center text-center">
         <p className="mb-4 rounded-full border-2 border-crema/60 px-4 py-1 text-sm font-bold tracking-widest uppercase">
           Pizzeria popolare · Vigone (TO)
         </p>

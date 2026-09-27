@@ -33,6 +33,22 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Lenis (da lenis/dist/lenis.css) + disattiva lo smooth nativo quando Lenis è attivo */
+html.lenis,
+html.lenis body {
+  height: auto;
+  scroll-behavior: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
 body {
   background: var(--crema);
   color: var(--inchiostro);
@@ -137,6 +153,10 @@ body {
   to {
     transform: translate3d(-50%, 0, 0);
   }
+}
+/* Con JS attivo il marquee lo muove GSAP (velocità legata allo scroll) */
+.motion-ready .marquee-track {
+  animation: none;
 }
 .marquee-track {
   display: flex;

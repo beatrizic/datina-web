@@ -13,6 +13,8 @@ function Row({ items, reverse, tone }: { items: CastName[]; reverse?: boolean; t
       className={`overflow-hidden py-3 ${tone === "verde" ? "bg-verde text-crema" : "bg-pomodoro-profondo text-crema"}`}
     >
       <ul
+        data-marquee-track
+        data-direction={reverse ? -1 : 1}
         className="marquee-track items-center"
         style={
           {
@@ -37,7 +39,7 @@ function Row({ items, reverse, tone }: { items: CastName[]; reverse?: boolean; t
 
 export function Marquee() {
   return (
-    <section aria-label="I nostri ingredienti" className="relative -my-2 -rotate-2 scale-[1.04] select-none">
+    <section data-marquee aria-label="I nostri ingredienti" className="relative -my-2 -rotate-2 scale-[1.04] select-none">
       <Row items={ROW_A} tone="rosso" />
       <Row items={ROW_B} reverse tone="verde" />
     </section>

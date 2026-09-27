@@ -12,7 +12,7 @@ export function Location() {
     >
       <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-2 md:items-center">
         <div>
-          <h2 id="dove-title" className="display text-[clamp(3.5rem,12vw,9rem)] text-crosta">
+          <h2 id="dove-title" data-split className="display text-[clamp(3.5rem,12vw,9rem)] text-crosta">
             Dove siamo
           </h2>
           <address className="mt-8 text-2xl not-italic">
