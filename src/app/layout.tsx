@@ -32,8 +32,8 @@ export const metadata: Metadata = {
     description: `${site.claim}. ${site.subtitle}.`,
     url: "/",
   },
-  // Il sito è in preview: niente indicizzazione finché non si collega il dominio.
-  robots: process.env.VERCEL_ENV === "production" ? undefined : { index: false, follow: false },
+  // Niente indicizzazione finché non si collega il dominio: si abilita con ALLOW_INDEXING=true.
+  robots: process.env.ALLOW_INDEXING === "true" ? undefined : { index: false, follow: false },
 };
 
 export const viewport: Viewport = {

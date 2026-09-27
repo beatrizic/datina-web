@@ -16,7 +16,7 @@ con pattern di interazione ispirati a redis.agency (solo pattern: mai asset, cod
 
 ## Deploy
 Progetto Vercel `datina-web` collegato al repo GitHub: **ogni push = deploy automatico** (preview sul branch
-di lavoro). Preview con `noindex` finché `VERCEL_ENV !== "production"`. Il dominio datina.it NON va collegato senza OK.
+di lavoro). Tutto `noindex` finché `ALLOW_INDEXING !== "true"` (anche la production su *.vercel.app). Il dominio datina.it NON va collegato senza OK.
 
 ## Stack (deciso dal brief, non ancora installato)
 Next.js App Router + TypeScript (SSG) · Tailwind + CSS variables · GSAP + ScrollTrigger · Lenis (infinite) ·
